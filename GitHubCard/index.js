@@ -62,7 +62,9 @@ const followersArray = [];
 
 axios.get("https://api.github.com/users/nati-alvarez").then(res=>{
   const user = res.data;
-  console.log(user);
+  const cards = document.querySelector(".cards");
+  const newCard = createCard(user);
+  cards.appendChild(newCard);
 }).catch(err=>{
   console.log(err);
 });
@@ -89,7 +91,7 @@ function createCard(user){
   location.textContent = `Location: ${user.location}`;
 
   const profile = document.createElement("p");
-  profile.innerHTML = `Profile: <a href='${user.url}'></a>}`;
+  profile.innerHTML = `Profile: <a href='${user.html_url}'>${user.html_url}</a>`;
 
   const followers = document.createElement("p");
   followers.textContent = `Followers: ${user.followers}`;
