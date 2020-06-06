@@ -58,3 +58,49 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+
+axios.get("https://api.github.com/users/nati-alvarez").then(res=>{
+  const user = res.data;
+  console.log(user);
+}).catch(err=>{
+  console.log(err);
+});
+
+function createCard(user){
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const pfp = document.createElement("img");
+  pfp.src = user.avatar_url;
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = user.name;
+
+  const username = document.createElement("p");
+  username.classList.add("username");
+  username.textContent = user.username;
+
+  const location = document.createElement("p");
+  location.textContent = `Location: ${user.location}`;
+
+  const profile = document.createElement("p");
+  profile.innerHTML = `Profile: <a href='${user.url}'></a>}`;
+
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${user.followers}`;
+
+  const following = document.createElement("p");
+  following.textContent = `Following: ${user.following}`;
+
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${user.bio}`;
+
+  cardInfo.append(name, username, location, profile, followers, following, bio);
+  card.append(pfp, cardInfo);
+  return card;
+}
