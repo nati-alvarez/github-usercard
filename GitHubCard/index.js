@@ -28,7 +28,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['BrandyBecker', 'noahbibb21', 'jekegren01', 'mosesintech', 'tetondan'];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -106,3 +106,14 @@ function createCard(user){
   card.append(pfp, cardInfo);
   return card;
 }
+
+followersArray.forEach(follower=>{
+  axios.get(`https://api.github.com/users/${follower}`).then(res=>{
+    const user = res.data;
+    const cards = document.querySelector(".cards");
+    const newCard = createCard(user);
+    cards.appendChild(newCard);
+  }).catch(err=>{
+    console.log(err);
+  });
+});
