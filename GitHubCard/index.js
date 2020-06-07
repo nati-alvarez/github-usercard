@@ -65,6 +65,21 @@ axios.get("https://api.github.com/users/nati-alvarez").then(res=>{
   const cards = document.querySelector(".cards");
   const newCard = createCard(user);
   cards.appendChild(newCard);
+  return getFollowersData(user.followers_url)
+}).then(res=>{
+  /********* PROGRAMMATIC IMPLEMENTATION OF FOLLOWERS **********/
+  // let followers = res.data;
+  // followers = followers.map(follower => follower.login);
+  // followers.forEach(follower =>{
+  //   return axios.get(`https://api.github.com/users/${follower}`).then(res=>{
+  //     const user = res.data;
+  //     const cards = document.querySelector(".cards");
+  //     const newCard = createCard(user);
+  //     cards.appendChild(newCard);
+  //   }).catch(err=>{
+  //     console.log(err);
+  //   });
+  // })
 }).catch(err=>{
   console.log(err);
 });
@@ -117,3 +132,7 @@ followersArray.forEach(follower=>{
     console.log(err);
   });
 });
+
+function getFollowersData(link){
+  return axios.get(link);
+};
