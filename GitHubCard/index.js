@@ -28,7 +28,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['BrandyBecker', 'noahbibb21', 'jekegren01', 'mosesintech', 'tetondan'];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -58,3 +58,81 @@ const followersArray = [];
     luishrd
     bigknell
 */
+
+
+axios.get("https://api.github.com/users/nati-alvarez").then(res=>{
+  const user = res.data;
+  const cards = document.querySelector(".cards");
+  const newCard = createCard(user);
+  cards.appendChild(newCard);
+  return getFollowersData(user.followers_url)
+}).then(res=>{
+  /********* PROGRAMMATIC IMPLEMENTATION OF FOLLOWERS **********/
+  // let followers = res.data;
+  // followers = followers.map(follower => follower.login);
+  // followers.forEach(follower =>{
+  //   return axios.get(`https://api.github.com/users/${follower}`).then(res=>{
+  //     const user = res.data;
+  //     const cards = document.querySelector(".cards");
+  //     const newCard = createCard(user);
+  //     cards.appendChild(newCard);
+  //   }).catch(err=>{
+  //     console.log(err);
+  //   });
+  // })
+}).catch(err=>{
+  console.log(err);
+});
+
+function createCard(user){
+  const card = document.createElement("div");
+  card.classList.add("card");
+
+  const pfp = document.createElement("img");
+  pfp.src = user.avatar_url;
+
+  const cardInfo = document.createElement("div");
+  cardInfo.classList.add("card-info");
+
+  const name = document.createElement("h3");
+  name.classList.add("name");
+  name.textContent = user.name;
+
+  const username = document.createElement("p");
+  username.classList.add("username");
+  username.textContent = user.username;
+
+  const location = document.createElement("p");
+  location.textContent = `Location: ${user.location}`;
+
+  const profile = document.createElement("p");
+  profile.innerHTML = `Profile: <a href='${user.html_url}'>${user.html_url}</a>`;
+
+  const followers = document.createElement("p");
+  followers.textContent = `Followers: ${user.followers}`;
+
+  const following = document.createElement("p");
+  following.textContent = `Following: ${user.following}`;
+
+  const bio = document.createElement("p");
+  bio.textContent = `Bio: ${user.bio}`;
+
+  cardInfo.append(name, username, location, profile, followers, following, bio);
+  card.append(pfp, cardInfo);
+  return card;
+}
+
+followersArray.forEach(follower=>{
+  axios.get(`https://api.github.com/users/${follower}`).then(res=>{
+    const user = res.data;
+    const cards = document.querySelector(".cards");
+    const newCard = createCard(user);
+    cards.appendChild(newCard);
+  }).catch(err=>{
+    console.log(err);
+  });
+});
+
+function getFollowersData(link){
+  return axios.get(link);
+};
